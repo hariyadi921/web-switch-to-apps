@@ -1,0 +1,9 @@
+**4. requirements.txt**:
+**5. scripts/network_check.sh** (Skrip Bash untuk pemeriksaan jaringan):
+```bash
+#!/bin/bash
+
+# Cek koneksi jaringan
+ping -c 4 google.com
+traceroute google.com
+nslookup google.com
