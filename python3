@@ -1,0 +1,38 @@
+import subprocess
+import json
+import os
+import sys
+
+def run_command(command):
+    try:
+        result = subprocess.check_output(
+            command, shell=True, stderr=subprocess.STDOUT
+        )
+        return result.decode('utf-8')
+    except subprocess.CalledProcessError as e:
+        return e.output.decode('utf-8')
+
+def scan_network(target):
+    tools = {
+        'whois': f'whois {target}',
+        'host': f'host {target}',
+        'whatweb': f'whatweb -v {target}',
+        'curl': f'curl -I {target}'
+    }
+    
+    results = {}
+    for tool, cmd in tools.items():
+        results[tool] = run_command(cmd)
+    
+    # Proses data dengan jq
+    processed = run_command(f"echo '{json.dumps(results)}' | jq '.'")
+    
+    # Update README
+    with open('README.md', 'a') as f:
+        f.write(f"\n\n## Scan Results\n```json\n{processed}\n```")
+    
+    return processed
+
+if __name__ == "__main__":
+    target = input("Enter target URL/IP: ")
+    print(scan_network(target))
