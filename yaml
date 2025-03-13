@@ -1,0 +1,16 @@
+name: Network Scan
+on: [push, schedule]
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+    - run: |
+        sudo apt-get install jq whois whatweb
+        pip install -r requirements.txt
+        python scanner.py example.com

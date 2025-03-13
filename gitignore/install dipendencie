@@ -1,0 +1,4 @@
+sudo apt install whois jq whatweb python3-pip
+pip3 install -r requirements.txt
+./connector.sh example.com
+php -S localhost:8000 -t web/
